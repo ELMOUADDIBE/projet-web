@@ -1,0 +1,31 @@
+### Get articles
+GET http://localhost:3000/articles?take=10&skip=0
+
+### Get article by id
+GET http://localhost:3000/articles/1
+
+### Create new article
+POST http://localhost:3000/articles
+Content-Type: application/json
+
+{
+    "titre": "Article Test",
+    "contenu": "Ceci est un test",
+    "image": "https://picsum.photos/500/300.jpg?",
+    "createdAt": "2023-05-14T00:00:00.000Z",
+    "updatedAt": "2023-05-14T00:00:00.000Z",
+    "published": true
+}
+
+### Update article
+PATCH http://localhost:3000/articles
+Content-Type: application/json
+
+{
+    "id": 1,
+    "titre": "Article Test Updated",
+    "contenu": "Ceci est un test mis à jour"
+}
+
+### Delete article
+DELETE http://localhost:3000/articles/1
