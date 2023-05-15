@@ -12,17 +12,17 @@ Content-Type: application/json
     "titre": "Article Test",
     "contenu": "Ceci est un test",
     "image": "https://picsum.photos/500/300.jpg?",
-    "createdAt": "2023-05-14T00:00:00.000Z",
-    "updatedAt": "2023-05-14T00:00:00.000Z",
-    "published": true
+    "createdAt": "2023-05-14T00:00:00.000",
+    "updatedAt": "2023-05-14T00:00:00.000",
+    "published": true,
+    "utilisateurId": 1
 }
 
 ### Update article
-PATCH http://localhost:3000/articles
+PATCH http://localhost:3000/articles/1
 Content-Type: application/json
 
 {
-    "id": 1,
     "titre": "Article Test Updated",
     "contenu": "Ceci est un test mis à jour"
 }

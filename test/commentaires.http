@@ -1,0 +1,26 @@
+### Get commentaires
+GET http://localhost:3000/commentaires?take=10&skip=0
+
+### Get commentaire by id
+GET http://localhost:3000/commentaires/1
+
+### Create new commentaire
+POST http://localhost:3000/commentaires
+Content-Type: application/json
+
+{
+    "email": "commenter@test.com",
+    "contenu": "Ceci est un commentaire",
+    "articleId": 1
+}
+
+### Update commentaire
+PATCH http://localhost:3000/commentaires/1
+Content-Type: application/json
+
+{
+    "contenu": "Ceci est un commentaire mis à jour"
+}
+
+### Delete commentaire
+DELETE http://localhost:3000/commentaires/1

@@ -1,0 +1,24 @@
+### Get categories
+GET http://localhost:3000/categories?take=10&skip=0
+
+### Get category by id
+GET http://localhost:3000/categories/1
+
+### Create new category
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "nom": "Category Test"
+}
+
+### Update category
+PATCH http://localhost:3000/categories/1
+Content-Type: application/json
+
+{
+    "nom": "Category Test Updated"
+}
+
+### Delete category
+DELETE http://localhost:3000/categories/1

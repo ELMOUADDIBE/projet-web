@@ -1,24 +1,70 @@
 const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  // 
+router.get('/', async (req, res) => {
+    const { take, skip } = req.query;
+    const categories = await prisma.categorie.findMany({ take: +take || 10, skip: +skip || 0 });
+    res.json(categories);
 });
 
-router.get('/:id', (req, res) => {
-  // 
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const categorie = await prisma.categorie.findUnique({ where: { id: +id } });
+        if (!categorie) return res.status(404).json({ error: 'Categorie not found' });
+        res.json(categorie);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
-router.post('/', (req, res) => {
-  //
+router.post('/', async (req, res) => {
+  const newCategorie = req.body;
+  
+  if (!newCategorie.utilisateurId) {
+      return res.status(400).json({ error: 'utilisateurId is required' });
+  }
+
+  const user = await prisma.utilisateur.findUnique({ where: { id: newCategorie.utilisateurId } });
+
+  if (!user) {
+      return res.status(400).json({ error: `No user found with id ${newCategorie.utilisateurId}` });
+  }
+
+  try {
+      const categorie = await prisma.categorie.create({ data: newCategorie });
+      res.json(categorie);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 });
 
-router.patch('/', (req, res) => {
-  //
+router.patch('/:id', async (req, res) => {
+    const { id } = req.params;
+    const updatedCategorie = req.body;
+
+    try {
+        const categorie = await prisma.categorie.update({ 
+            where: { id: +id },
+            data: updatedCategorie
+        });
+        res.json(categorie);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
-router.delete('/:id', (req, res) => {
-  //
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await prisma.categorie.delete({ where: { id: +id } });
+        res.json({ message: `Categorie with id ${id} deleted.` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 module.exports = router;
