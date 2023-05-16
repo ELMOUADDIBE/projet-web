@@ -52,28 +52,36 @@ async function main() {
     );
 
     // Create 100 articles
-    const articles = await Promise.all(
-      new Array(100).fill(null).map(async () => {
-        const authorId = authors[Math.floor(Math.random() * authors.length)].id;
-        const categoryIds = categories.slice(0, Math.floor(Math.random() * 4 + 1)).map((c) => c.id);
-        return prisma.article.create({
-          data: {
-            titre: faker.lorem.sentence(),
-            contenu: faker.lorem.paragraphs(),
-            image: faker.image.imageUrl(),
-            createdAt: faker.date.recent(),
-            updatedAt: faker.date.recent(),
-            published: faker.datatype.boolean(),
-            utilisateur: {
-              connect: { id: authorId },
-            },
-            categories: {
-              connect: categoryIds.map((id) => ({ id })),
-            },
-          },
-        });
-      })
-    );
+
+
+const articles = await Promise.all(
+  new Array(100).fill(null).map(async () => {
+    const authorId = authors[Math.floor(Math.random() * authors.length)].id;
+    const categoryIds = categories.slice(0, Math.floor(Math.random() * 10 + 1)).map((c) => c.id);
+
+    // Générer une date de création aléatoire
+    const startDate = new Date('2022-01-01');
+    const endDate = new Date();
+    const createdAt = faker.date.between(startDate, endDate);
+
+    return prisma.article.create({
+      data: {
+        titre: faker.lorem.sentence(),
+        contenu: faker.lorem.paragraphs(),
+        image: `https://picsum.photos/500/300.jpg?${faker.datatype.uuid()}`,
+        createdAt,
+        updatedAt: faker.date.recent(),
+        published: faker.datatype.boolean(),
+        utilisateur: {
+          connect: { id: authorId },
+        },
+        categories: {
+          connect: categoryIds.map((id) => ({ id })),
+        },
+      },
+    });
+  })
+);
 
     // Create 0-20 comments for each article
     await Promise.all(

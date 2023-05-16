@@ -21,6 +21,16 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id/comments/count', async (req, res) => {
+    const { id } = req.params;
+    try {
+      const count = await prisma.commentaire.count({ where: { articleId: +id } });
+      res.json({ count });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 router.post('/', async (req, res) => {
   const newArticle = req.body;
   

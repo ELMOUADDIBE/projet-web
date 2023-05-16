@@ -21,6 +21,58 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id/articles', async (req, res) => {
+    const { id } = req.params;
+    const { take, skip } = req.query;
+
+    try {
+        const articles = await prisma.article.findMany({
+            where: {
+                categories: {
+                    some: {
+                        id: +id,
+                    },
+                },
+            },
+            take: +take || 10,
+            skip: +skip || 0,
+        });
+
+        const count = await prisma.article.count({
+            where: {
+                categories: {
+                    some: {
+                        id: +id,
+                    },
+                },
+            },
+        });
+
+        if (!articles) return res.status(404).json({ error: 'No articles found for this category' });
+        res.json({ articles, count });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/:id/articles/count', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const count = await prisma.article.count({
+            where: {
+                categories: {
+                    some: {
+                        id: +id,
+                    },
+                },
+            },
+        });
+        res.json({ count });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.post('/', async (req, res) => {
   const newCategorie = req.body;
   
