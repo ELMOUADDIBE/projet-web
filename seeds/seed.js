@@ -26,15 +26,14 @@ async function main() {
     );
 
     // Create 1 user with role ADMIN
-    const existingAdmin = await prisma.utilisateur.findUnique({ where: { email: 'zaid@elmouaddibe.ma' } });
-    if (existingAdmin) {
-      await prisma.utilisateur.delete({ where: { id: existingAdmin.id } });
+    const existingUser = await prisma.utilisateur.findUnique({ where: { email: 'elmouaddibe@zaid.ma' } });
+    if (existingUser) {
+      await prisma.utilisateur.delete({ where: { id: existingUser.id } });
     }
-    
     const admin = await prisma.utilisateur.create({
       data: {
         nom: 'elmouaddibe',
-        email: 'zaid@elmouaddibe.ma',
+        email: 'elmouaddibe@zaid.ma',
         password: 'enset2023',
         role: 'ADMIN',
       },
@@ -52,36 +51,34 @@ async function main() {
     );
 
     // Create 100 articles
+    const articles = await Promise.all(
+      new Array(100).fill(null).map(async () => {
+        const authorId = authors[Math.floor(Math.random() * authors.length)].id;
+        const categoryIds = categories.slice(0, Math.floor(Math.random() * 4 + 1)).map((c) => c.id);
 
+        // Générer une date de création aléatoire
+        const startDate = new Date('2023-01-01');
+        const endDate = new Date();
+        const createdAt = faker.date.between(startDate, endDate);
 
-const articles = await Promise.all(
-  new Array(100).fill(null).map(async () => {
-    const authorId = authors[Math.floor(Math.random() * authors.length)].id;
-    const categoryIds = categories.slice(0, Math.floor(Math.random() * 10 + 1)).map((c) => c.id);
-
-    // Générer une date de création aléatoire
-    const startDate = new Date('2022-01-01');
-    const endDate = new Date();
-    const createdAt = faker.date.between(startDate, endDate);
-
-    return prisma.article.create({
-      data: {
-        titre: faker.lorem.sentence(),
-        contenu: faker.lorem.paragraphs(),
-        image: `https://picsum.photos/500/300.jpg?${faker.datatype.uuid()}`,
-        createdAt,
-        updatedAt: faker.date.recent(),
-        published: faker.datatype.boolean(),
-        utilisateur: {
-          connect: { id: authorId },
-        },
-        categories: {
-          connect: categoryIds.map((id) => ({ id })),
-        },
-      },
-    });
-  })
-);
+        return prisma.article.create({
+          data: {
+            titre: faker.lorem.sentence(),
+            contenu: faker.lorem.paragraphs(),
+            image: `https://picsum.photos/500/300.jpg?${faker.datatype.uuid()}`,
+            createdAt,
+            updatedAt: faker.date.recent(),
+            published: faker.datatype.boolean(),
+            utilisateur: {
+              connect: { id: authorId },
+            },
+            categories: {
+              connect: categoryIds.map((id) => ({ id })),
+            },
+          },
+        });
+      })
+    );
 
     // Create 0-20 comments for each article
     await Promise.all(
@@ -103,9 +100,9 @@ const articles = await Promise.all(
       })
     );
 
-    console.log('Data seeded successfully.');
+    console.log('Data seeded OK.');
   } catch (error) {
-    console.error('Error seeding data:', error);
+    console.error('ERROR:', error);
   } finally {
     await prisma.$disconnect();
   }
