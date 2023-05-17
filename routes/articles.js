@@ -24,32 +24,46 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/comments/count', async (req, res) => {
     const { id } = req.params;
     try {
-      const count = await prisma.commentaire.count({ where: { articleId: +id } });
-      res.json({ count });
+        const count = await prisma.commentaire.count({ where: { articleId: +id } });
+        res.json({ count });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  });
+});
 
 router.post('/', async (req, res) => {
-  const newArticle = req.body;
-  
-  if (!newArticle.utilisateurId) {
-      return res.status(400).json({ error: 'utilisateurId is required' });
-  }
+    const { titre, contenu, image, published, utilisateurId } = req.body;
 
-  const user = await prisma.utilisateur.findUnique({ where: { id: newArticle.utilisateurId } });
+    if (!utilisateurId) {
+        return res.status(400).json({ error: 'utilisateurId is required' });
+    }
 
-  if (!user) {
-      return res.status(400).json({ error: `No user found with id ${newArticle.utilisateurId}` });
-  }
+    const user = await prisma.utilisateur.findUnique({ where: { id: utilisateurId } });
 
-  try {
-      const article = await prisma.article.create({ data: newArticle });
-      res.json(article);
-  } catch (error) {
-      res.status(500).json({ error: error.message });
-  }
+    if (!user) {
+        return res.status(400).json({ error: `No user found with id ${utilisateurId}` });
+    }
+
+    try {
+        const createdAt = new Date();
+        const updatedAt = new Date();
+
+        const article = await prisma.article.create({
+            data: {
+                titre,
+                contenu,
+                image,
+                createdAt,
+                updatedAt,
+                published,
+                utilisateurId,
+            },
+        });
+
+        res.json(article);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 router.patch('/:id', async (req, res) => {
@@ -57,9 +71,9 @@ router.patch('/:id', async (req, res) => {
     const updatedArticle = req.body;
 
     try {
-        const article = await prisma.article.update({ 
+        const article = await prisma.article.update({
             where: { id: +id },
-            data: updatedArticle
+            data: updatedArticle,
         });
         res.json(article);
     } catch (error) {
