@@ -1,5 +1,5 @@
 ### Get users
-GET http://localhost:3000/users?take=10&skip=0
+GET http://localhost:3000/users?take=30&skip=0
 
 ### Get user by id
 GET http://localhost:3000/users/1

@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
+#invalid-pass{
+	display: none;
+}
+#invalid-email{
+	display: none;
+}
+#email-used{
+	display: none;
+}
+#logout-button{
+	display: none;
+}
 * {
 	box-sizing: border-box;
 }

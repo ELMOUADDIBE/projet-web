@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
+var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/users');
 var articlesRouter = require('./routes/articles');
 var categoriesRouter = require('./routes/categories');
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/articles', articlesRouter);
 app.use('/categories', categoriesRouter);
@@ -42,6 +44,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).json({ error: err.message });
 });
 
 app.listen(3000, ()=> console.log('server on port 3000'))
