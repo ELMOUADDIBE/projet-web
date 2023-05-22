@@ -21,6 +21,21 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/article/:articleId', async (req, res) => {
+    const { articleId } = req.params;
+    try {
+        const commentaires = await prisma.commentaire.findMany({
+            where: { articleId: Number(articleId) },
+            include: {
+                utilisateur: true,
+            },
+        });
+        res.json(commentaires);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.post('/', async (req, res) => {
     const newCommentaire = req.body;
     try {
@@ -36,7 +51,7 @@ router.patch('/:id', async (req, res) => {
     const updatedCommentaire = req.body;
 
     try {
-        const commentaire = await prisma.commentaire.update({ 
+        const commentaire = await prisma.commentaire.update({
             where: { id: +id },
             data: updatedCommentaire
         });

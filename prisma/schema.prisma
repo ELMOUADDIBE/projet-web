@@ -13,12 +13,13 @@ enum Role {
 }
 
 model Utilisateur {
-  id        Int         @id @default(autoincrement())
-  nom       String
-  email     String      @unique
-  password  String
-  role      Role
-  articles  Article[]
+  id          Int          @id @default(autoincrement())
+  nom         String
+  email       String       @unique
+  password    String
+  role        Role
+  articles    Article[]
+  commentaires Commentaire[] @relation("UtilisateurToCommentaire")
 }
 
 model Article {
@@ -42,9 +43,11 @@ model Categorie {
 }
 
 model Commentaire {
-  id        Int      @id @default(autoincrement())
-  email     String
-  contenu   String
-  articleId Int
-  article   Article  @relation(fields: [articleId], references: [id])
+  id            Int          @id @default(autoincrement())
+  email         String
+  contenu       String
+  articleId     Int
+  article       Article      @relation(fields: [articleId], references: [id])
+  utilisateur   Utilisateur  @relation("UtilisateurToCommentaire", fields: [utilisateurId], references: [id])
+  utilisateurId Int
 }

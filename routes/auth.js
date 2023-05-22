@@ -17,7 +17,7 @@ router.post('/signup', async (req, res, next) => {
     if (existingUser) {
       return res.status(400).json({ message: 'Email already in use' });
     }
-    
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const user = await prisma.utilisateur.create({
@@ -49,7 +49,7 @@ router.post('/login', async (req, res, next) => {
       return res.status(400).json({ message: 'Invalid password' });
     }
     const token = jwt.sign({ id: user.id }, 'Secret@ELMOUADDIBE', { expiresIn: '1d' });
-    res.send({ token: token });
+    res.send({ id: user.id, nom: user.nom, role: user.role, token: token });
   } catch (error) {
     console.log('Error occurred:', error);
     next(error);

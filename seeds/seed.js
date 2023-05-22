@@ -1,4 +1,4 @@
-const faker = require('faker/locale/ar');
+const faker = require('faker/locale/fr');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
@@ -26,14 +26,15 @@ async function main() {
     );
 
     // Create 1 user with role ADMIN
-    const existingUser = await prisma.utilisateur.findUnique({ where: { email: 'elmouaddibe@zaid.ma' } });
-    if (existingUser) {
-      await prisma.utilisateur.delete({ where: { id: existingUser.id } });
+    const existingAdmin = await prisma.utilisateur.findUnique({ where: { email: 'zaid@elmouaddibe.ma' } });
+    if (existingAdmin) {
+      await prisma.utilisateur.delete({ where: { id: existingAdmin.id } });
     }
+
     const admin = await prisma.utilisateur.create({
       data: {
         nom: 'elmouaddibe',
-        email: 'elmouaddibe@zaid.ma',
+        email: 'zaid@elmouaddibe.ma',
         password: 'enset2023',
         role: 'ADMIN',
       },
@@ -54,10 +55,10 @@ async function main() {
     const articles = await Promise.all(
       new Array(100).fill(null).map(async () => {
         const authorId = authors[Math.floor(Math.random() * authors.length)].id;
-        const categoryIds = categories.slice(0, Math.floor(Math.random() * 4 + 1)).map((c) => c.id);
+        const categoryIds = categories.slice(0, Math.floor(Math.random() * 10 + 1)).map((c) => c.id);
 
-        // Générer une date de création aléatoire
-        const startDate = new Date('2023-01-01');
+        // Generate a random creation date
+        const startDate = new Date('2022-01-01');
         const endDate = new Date();
         const createdAt = faker.date.between(startDate, endDate);
 
@@ -86,12 +87,16 @@ async function main() {
         const commentCount = Math.floor(Math.random() * 21);
         await Promise.all(
           new Array(commentCount).fill(null).map(async () => {
+            const userId = authors[Math.floor(Math.random() * authors.length)].id;
             return prisma.commentaire.create({
               data: {
                 email: faker.internet.email(),
                 contenu: faker.lorem.paragraph(),
                 article: {
                   connect: { id: article.id },
+                },
+                utilisateur: {
+                  connect: { id: userId },
                 },
               },
             });
@@ -100,9 +105,9 @@ async function main() {
       })
     );
 
-    console.log('Data seeded OK.');
+    console.log('Data seeded successfully.');
   } catch (error) {
-    console.error('ERROR:', error);
+    console.error('Error seeding data:', error);
   } finally {
     await prisma.$disconnect();
   }

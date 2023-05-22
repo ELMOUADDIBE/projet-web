@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await prisma.utilisateur.findUnique({ where: { id: +id } });
+        const user = await prisma.utilisateur.findUnique({ where: { id: +id }, select: { nom: true, role: true } });
         if (!user) return res.status(404).json({ error: 'User not found' });
         res.json(user);
     } catch (error) {
@@ -36,7 +36,7 @@ router.patch('/:id', async (req, res) => {
     const updatedUser = req.body;
 
     try {
-        const user = await prisma.utilisateur.update({ 
+        const user = await prisma.utilisateur.update({
             where: { id: +id },
             data: updatedUser
         });

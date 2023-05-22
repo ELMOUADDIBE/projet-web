@@ -6,8 +6,19 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     const { take, skip } = req.query;
-    const articles = await prisma.article.findMany({ take: +take || 10, skip: +skip || 0 });
-    res.json(articles);
+    try {
+        const articles = await prisma.article.findMany({
+            take: +take || 10,
+            skip: +skip || 0,
+            include: {
+                utilisateur: true,
+                categories: true,
+            },
+        });
+        res.json(articles);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 router.get('/:id', async (req, res) => {
