@@ -14,6 +14,8 @@
 
 #logout-button {
   display: none;
+  margin: 0px 0.65rem;
+  padding: 13px 21px;
 }
 
 * {
@@ -351,7 +353,7 @@ input {
 }
 
 .LargeModal {
-  width: 1320px !important;
+  width: 1200px !important;
 }
 
 .card {
@@ -437,11 +439,9 @@ input {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  margin: 5px 0px;
-  padding: 20px;
+  padding: 30px 20px;
   transform: skewY(-2deg);
   overflow: hidden;
-  height: 12%;
 }
 
 .about-us-section::before {
@@ -509,10 +509,43 @@ footer {
 }
 
 .fullpage {
-  margin-top: 3%;
   transform: skewY(-2deg);
   bottom: 0;
 }
-.text-center p{
+.text-center p {
   transform: skewY(+2deg);
+}
+
+#addArticleModal .modal-header,
+#updateArticleModal .modal-header {
+  font-weight: bold;
+  background: linear-gradient(to right, rgb(15, 15, 15), rgb(34, 33, 33));
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.flex-container > label {
+  flex: 0 0 100%;
+  margin-bottom: 0.1em;
+}
+
+.form-check-inline {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input[type="checkbox"] {
+  border-radius: 30%;
+  margin-right: 10px;
+}
+
+textarea.form-control {
+  width: 25rem !important;
+}
+td {
+  text-align: center;
 }

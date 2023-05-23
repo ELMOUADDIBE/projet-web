@@ -14,6 +14,9 @@ router.get('/', async (req, res) => {
                 utilisateur: true,
                 categories: true,
             },
+            orderBy: {
+                createdAt: 'desc',
+            },
         });
         res.json(articles);
     } catch (error) {
@@ -43,7 +46,7 @@ router.get('/:id/comments/count', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { titre, contenu, image, published, utilisateurId } = req.body;
+    const { titre, contenu, image, published, utilisateurId, categories } = req.body;
 
     if (!utilisateurId) {
         return res.status(400).json({ error: 'utilisateurId is required' });
@@ -68,6 +71,9 @@ router.post('/', async (req, res) => {
                 updatedAt,
                 published,
                 utilisateurId,
+                categories: {
+                    connect: categories.map(id => ({ id })),
+                },
             },
         });
 

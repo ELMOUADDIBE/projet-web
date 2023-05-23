@@ -13,11 +13,12 @@ Content-Type: application/json
     "contenu": "Ceci est un test",
     "image": "https://picsum.photos/500/300.jpg?",
     "published": true,
-    "utilisateurId": 126
+    "utilisateurId": 127,
+    "categories": [53, 54]
 }
 
 ### Update article
-PATCH http://localhost:3000/articles/305
+PATCH http://localhost:3000/articles/529
 Content-Type: application/json
 
 {
@@ -26,4 +27,4 @@ Content-Type: application/json
 }
 
 ### Delete article
-DELETE http://localhost:3000/articles/1
+DELETE http://localhost:3000/articles/506

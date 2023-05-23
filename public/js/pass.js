@@ -1,4 +1,4 @@
-//Login form
+// Login id declaration
 const signUpButton = document.getElementById('signUp2');
 const signInButton = document.getElementById('signIn2');
 const container = document.getElementById('container');
@@ -11,6 +11,7 @@ const invalidEmailMessage = document.getElementById('invalid-email');
 const invalidPassMessage = document.getElementById('invalid-pass');
 const emailUsedMessage = document.getElementById('email-used');
 
+// Signup SignIn form animation
 signUpButton.addEventListener('click', () => {
 	container.classList.add("right-panel-active");
 });
@@ -19,13 +20,13 @@ signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
 
+// Authentification
 function getUserInfo(id) {
 	return fetch(`/users/${id}`)
 		.then(response => response.json())
 		.catch(error => console.error('Erreur :', error));
 }
 
-// Authentification
 function signup(name, email, password) {
 	return fetch('/auth/signup', {
 			method: 'POST',
@@ -39,7 +40,7 @@ function signup(name, email, password) {
 			}),
 		})
 		.then(response => response.json())
-		.catch(error => console.error('Erreur :', error));
+		.catch(error => console.error(error));
 }
 
 function login(email, password) {
@@ -76,11 +77,11 @@ function login(email, password) {
 			return response.json();
 		})
 		.then(data => {
-			if (data.token) { // Vérifier si la propriété token est présente dans la réponse
+			if (data.token) {
 				console.log('User logged in, token:', data.token);
 				return data;
 			} else {
-				errorMessage = 'Login failed: Token not found in the response';
+				errorMessage = 'Failed: Token not found';
 				throw new Error(errorMessage);
 			}
 		})
@@ -115,16 +116,14 @@ function handleSignin(e) {
 	const email = document.getElementById('signin-email').value;
 	const password = document.getElementById('signin-password').value;
 
-	// Cacher les messages d'erreur dans le modal
+	// Hide error msg in form
 	invalidEmailMessage.style.display = 'none';
 	invalidPassMessage.style.display = 'none';
 
 	login(email, password)
 		.then(response => {
 			console.log('Login success OK');
-			// Fermer la fenêtre modale
 			$('#loginModal').modal('hide');
-			// Modifier la barre de navigation
 			authButton.style.display = 'none';
 			logoutButton.style.display = 'block';
 
@@ -135,7 +134,10 @@ function handleSignin(e) {
 				getUserInfo(userId)
 					.then(userInfo => {
 						console.log('LOGIN ID : ', userId);
-						const {nom,role} = userInfo;
+						const {
+							nom,
+							role
+						} = userInfo;
 						showLoginSuccessPopup(nom);
 
 						document.getElementById("check").value = userId;
@@ -153,10 +155,11 @@ function handleSignin(e) {
 		});
 }
 
+// Button event of Login
 signupForm.addEventListener('submit', handleSignup);
 signinForm.addEventListener('submit', handleSignin);
 
-// Fonction de déconnexion
+// Logout fct
 function logout() {
 	authButton.style.display = 'block';
 	logoutButton.style.display = 'none';
@@ -165,7 +168,7 @@ function logout() {
 
 logoutButton.addEventListener('click', logout);
 
-// Modal d'erreur decoration
+// Modal error popup decoration
 document.getElementById('forgot-password').addEventListener('click', function() {
 	Swal.fire({
 		title: 'Mot de passe oublié',
@@ -182,7 +185,7 @@ function showLoginSuccessPopup(nom) {
 		title: 'Connecté avec succès',
 		text: `${nom} a été connecté avec succès.`,
 		animation: false,
-		position: 'top-right',
+		position: 'top',
 		showConfirmButton: false,
 		timer: 4000,
 		timerProgressBar: true,
@@ -198,7 +201,7 @@ function showSignupSuccessPopup(nom) {
 		title: 'Compte créé avec succès',
 		text: `Votre compte ${nom} a été créé avec succès.`,
 		animation: false,
-		position: 'top-right',
+		position: 'top',
 		showConfirmButton: false,
 		timer: 4000,
 		timerProgressBar: true,
