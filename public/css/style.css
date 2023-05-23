@@ -157,10 +157,6 @@ p {
   padding-left: 15px;
 }
 
-span {
-  font-size: 12px;
-}
-
 a {
   color: #333;
   font-size: 14px;
@@ -548,4 +544,8 @@ textarea.form-control {
 }
 td {
   text-align: center;
+}
+body.swal2-shown > [aria-hidden="true"] {
+  transition: 0.1s filter;
+  filter: blur(5px);
 }

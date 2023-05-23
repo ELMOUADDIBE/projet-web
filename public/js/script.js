@@ -568,7 +568,7 @@ async function loadUserArticles() {
 		const operationsCell = document.createElement('td');
 
 		const updateButton = document.createElement('button');
-		updateButton.classList.add('btn', 'btn-primary', 'me-3');
+		updateButton.classList.add('btn', 'btn-primary', 'me-2');
 		updateButton.innerHTML = '<i class="bi bi-pencil-fill"></i>';
 		updateButton.addEventListener('click', () => openUpdateModal(article));
 		operationsCell.appendChild(updateButton);
@@ -612,7 +612,7 @@ document.querySelector("#mesArticles").addEventListener('click', async function(
 		});
 	} else {
 		clearPage('Mes articles', 'Explorations et réflexions : ma collection personnelle d\'articles');
-		document.getElementById("mesArticlesDisplay").innerHTML = '<div class="row justify-content-center"> <div class="col-11"><table id="articlesTable" class="table table-striped table-bordered bg-light text-dark"><thead><tr><th>ID Article</th><th>Titre</th><th>Contenu</th><th>Date de création</th><th>Opérations</th></tr></thead><tbody id="articlesBody"><!-- Les lignes de tableau seront générées ici par JavaScript --></tbody></table></div></div>';
+		document.getElementById("mesArticlesDisplay").innerHTML = '<div class="row"> <div class="col-11"><table id="articlesTable" class="table table-striped table-bordered bg-light text-dark"><thead><tr><th>ID Article</th><th>Titre</th><th>Contenu</th><th>Date de création</th><th>Opérations</th></tr></thead><tbody id="articlesBody"><!-- Les lignes de tableau seront générées ici par JavaScript --></tbody></table></div></div>';
 		loadUserArticles();
 	}
 });
