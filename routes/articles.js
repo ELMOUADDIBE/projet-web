@@ -8,6 +8,9 @@ router.get('/', async (req, res) => {
     const { take, skip } = req.query;
     try {
         const articles = await prisma.article.findMany({
+            where: {
+                published: true,
+              },
             take: +take || 10,
             skip: +skip || 0,
             include: {

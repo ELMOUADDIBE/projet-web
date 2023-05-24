@@ -505,7 +505,6 @@ function reloadPage() {
 async function openUpdateModal(article) {
 	document.getElementById('updateArticleId').value = article.id;
 	document.getElementById('updateTitre').value = article.titre;
-	document.getElementById('updateContenu').value = article.contenu;
 	document.getElementById('updateImage').value = article.image;
 	document.getElementById('updatePublished').checked = article.published;
 
@@ -561,6 +560,13 @@ async function loadUserArticles() {
 		contentCell.textContent = article.contenu;
 		row.appendChild(contentCell);
 
+		const pubCell = document.createElement('td');
+		if (article.published)
+			pubCell.innerHTML = '<span class="badge rounded-pill bg-success">Oui</span>';
+		else
+			pubCell.innerHTML = '<span class="badge rounded-pill bg-false">Non</span>';
+		row.appendChild(pubCell);
+
 		const dateCell = document.createElement('td');
 		dateCell.textContent = new Date(article.createdAt).toLocaleString();
 		row.appendChild(dateCell);
@@ -612,7 +618,7 @@ document.querySelector("#mesArticles").addEventListener('click', async function(
 		});
 	} else {
 		clearPage('Mes articles', 'Explorations et réflexions : ma collection personnelle d\'articles');
-		document.getElementById("mesArticlesDisplay").innerHTML = '<div class="row"> <div class="col-11"><table id="articlesTable" class="table table-striped table-bordered bg-light text-dark"><thead><tr><th>ID Article</th><th>Titre</th><th>Contenu</th><th>Date de création</th><th>Opérations</th></tr></thead><tbody id="articlesBody"><!-- Les lignes de tableau seront générées ici par JavaScript --></tbody></table></div></div>';
+		document.getElementById("mesArticlesDisplay").innerHTML = '<div class="row"> <div class="col-12"><table id="articlesTable" class="table table-striped table-bordered bg-light text-dark"><thead><tr><th>ID Article</th><th>Titre</th><th>Contenu</th><th>Publiée</th><th>Date de création</th><th>Opérations</th></tr></thead><tbody id="articlesBody"><!-- Les lignes de tableau seront générées ici par JavaScript --></tbody></table></div></div>';
 		loadUserArticles();
 	}
 });

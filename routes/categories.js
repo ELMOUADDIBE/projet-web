@@ -33,6 +33,7 @@ router.get('/:id/articles', async (req, res) => {
             id: +id,
           },
         },
+        published: true,
       },
       include: {
         utilisateur: true,
@@ -52,6 +53,7 @@ router.get('/:id/articles', async (req, res) => {
             id: +id,
           },
         },
+        published: true,
       },
     });
 
