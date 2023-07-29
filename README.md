@@ -1,4 +1,4 @@
-<h1 align="center">🖋️ Blog Interactif par ZAID EL MOUADDIBE</h1>
+<h1 align="center">🖋️ Blog Interactif SPA</h1>
 
 <div align="center">
 
